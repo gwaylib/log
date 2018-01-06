@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"git.ot24.net/go/engine/errors"
+	"github.com/gwaylib/errors"
 )
 
 var testDataString = []*Data{

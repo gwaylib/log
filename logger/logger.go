@@ -25,7 +25,7 @@ type Logger struct {
 	IsFatal    bool
 }
 
-func New(loggerName string, level proto.Level, adapterName ...string) *Logger {
+func New(loggerName string, level proto.Level, adapterName ...string) proto.Log {
 	adapters := map[string]adapter.Adapter{}
 	for _, name := range adapterName {
 		adapter, err := adapter.GetAdapter(name)
