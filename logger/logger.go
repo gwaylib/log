@@ -35,40 +35,20 @@ func New(loggerName string, level proto.Level, adapterName ...string) proto.Log 
 		adapters[name] = adapter
 	}
 
-	var IsDebug, IsInfo, IsWarn, IsErr, IsFatal bool
-	switch level {
-	case proto.LevelDebug:
-		IsDebug = true
-		IsInfo = true
-		IsWarn = true
-		IsErr = true
-		IsFatal = true
-	case proto.LevelInfo:
-		IsInfo = true
-		IsWarn = true
-		IsErr = true
-		IsFatal = true
-	case proto.LevelWarn:
-		IsWarn = true
-		IsErr = true
-		IsFatal = true
-	case proto.LevelError:
-		IsErr = true
-		IsFatal = true
-	case proto.LevelFatal:
-		IsFatal = true
+	lg := &Logger{
+		adapters:   adapters,
+		loggerName: loggerName,
 	}
+	lg.SetLevel(int(level))
+	return lg
+}
 
-	return &Logger{
-		nil,
-		adapters,
-		loggerName,
-		IsDebug,
-		IsInfo,
-		IsWarn,
-		IsErr,
-		IsFatal,
-	}
+func (l *Logger) SetLevel(level int) {
+	l.IsDebug = level <= 0
+	l.IsInfo = level <= 1
+	l.IsWarn = level <= 2
+	l.IsErr = level <= 3
+	l.IsFatal = level <= 4
 }
 
 // 设置服务器信息

@@ -12,6 +12,11 @@ func SetDefaultLog(l *logger.Logger) {
 	lg = l
 }
 
+// 设置默认日志的级别
+func SetLevel(l int) {
+	lg.SetLevel(l)
+}
+
 // 值 0
 // 调试信息,不提交服务器.
 // 由平台控制,可控制台输出,相当于fmt.Print输出.
