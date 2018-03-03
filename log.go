@@ -5,12 +5,13 @@ import (
 
 	"github.com/gwaylib/log/logger"
 	"github.com/gwaylib/log/logger/adapter/stdio"
+	"github.com/gwaylib/log/logger/proto"
 )
 
 var lg = logger.New("default", stdio.New(os.Stdout))
 
 // 设置默认的日志器
-func SetDefaultLog(l *logger.Logger) {
+func SetLogger(l proto.Log) {
 	lg = l
 }
 
