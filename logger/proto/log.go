@@ -6,7 +6,7 @@
 // 日志在使用结束后应关闭，以确保缓存的数据能够输出，如果缓存的数据不能输出，该错误由适配器进行转存处理。
 package proto
 
-type Log interface {
+type Logger interface {
 	// 设置日志级别
 	SetLevel(level int)
 

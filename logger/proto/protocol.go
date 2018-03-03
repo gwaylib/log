@@ -28,9 +28,9 @@ func (l Level) ColorString() string {
 	case LevelDebug:
 		return color.White("DEBUG")
 	case LevelInfo:
-		return color.Green("INFO")
+		return color.Green("INFO ")
 	case LevelWarn:
-		return color.Yellow("WARN")
+		return color.Yellow("WARN ")
 	case LevelError:
 		return color.Red("ERROR")
 	case LevelFatal:
@@ -76,20 +76,20 @@ func (d Data) String() string {
 	return fmt.Sprintf("%v,level:%d,logger:%s,msg:%s", d.Date, d.Level, d.Logger, string(d.Msg))
 }
 
-type LogProto struct {
+type Proto struct {
 	Context Context `json:"context"`
 	Data    []*Data `json:"data"`
 }
 
-func Unmarshal(src []byte) (*LogProto, error) {
-	log := &LogProto{}
+func Unmarshal(src []byte) (*Proto, error) {
+	log := &Proto{}
 	if err := json.Unmarshal(src, log); err != nil {
 		return nil, err
 	}
 	return log, nil
 }
 
-func Marshal(l *LogProto) ([]byte, error) {
+func Marshal(l *Proto) ([]byte, error) {
 	data, err := json.Marshal(l)
 	if err != nil {
 		return nil, err

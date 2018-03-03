@@ -8,10 +8,10 @@ import (
 	"github.com/gwaylib/log/logger/proto"
 )
 
-var lg = logger.New("default", stdio.New(os.Stdout))
+var lg = proto.Logger(logger.New("default", stdio.New(os.Stdout)))
 
 // 设置默认的日志器
-func SetLogger(l proto.Log) {
+func SetLogger(l proto.Logger) {
 	lg = l
 }
 

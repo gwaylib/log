@@ -24,7 +24,7 @@ type Logger struct {
 	IsFatal    bool
 }
 
-func New(loggerName string, adapter ...Adapter) proto.Log {
+func New(loggerName string, adapter ...Adapter) *Logger {
 	lg := &Logger{
 		adapters:   adapter,
 		loggerName: loggerName,
@@ -209,7 +209,7 @@ func (l *Logger) Put(data []*proto.Data) {
 		context = l.context
 	}
 
-	log := &proto.LogProto{
+	log := &proto.Proto{
 		*context,
 		data,
 	}
