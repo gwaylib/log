@@ -1,16 +1,14 @@
-package console
+package stdio
 
 import (
+	"os"
 	"testing"
 
 	"github.com/gwaylib/log/logger"
-	"github.com/gwaylib/log/logger/adapter"
-	"github.com/gwaylib/log/logger/proto"
 )
 
 func TestPut(t *testing.T) {
-	adapter.Register(AdapterName, New())
-	log := logger.NewLogger([]string{AdapterName}, "console_test", proto.LevelDebug)
+	log := logger.New("testing", New(os.Stdout))
 	log.Debug("debug")
 	log.Debug([]byte{0xff})
 	log.Info("info")

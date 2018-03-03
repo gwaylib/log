@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/gwaylib/log/logger/adapter"
 	"github.com/gwaylib/log/logger/proto"
 )
 
@@ -16,7 +15,7 @@ var (
 // logger for private
 type Logger struct {
 	context    *proto.Context
-	adapters   map[string]adapter.Adapter
+	adapters   []Adapter
 	loggerName string
 	IsDebug    bool
 	IsInfo     bool
@@ -25,22 +24,17 @@ type Logger struct {
 	IsFatal    bool
 }
 
-func New(loggerName string, level proto.Level, adapterName ...string) proto.Log {
-	adapters := map[string]adapter.Adapter{}
-	for _, name := range adapterName {
-		adapter, err := adapter.GetAdapter(name)
-		if err != nil {
-			panic(err)
-		}
-		adapters[name] = adapter
-	}
-
+func New(loggerName string, adapter ...Adapter) proto.Log {
 	lg := &Logger{
-		adapters:   adapters,
+		adapters:   adapter,
 		loggerName: loggerName,
 	}
-	lg.SetLevel(int(level))
+	lg.SetLevel(0)
 	return lg
+}
+
+func (l *Logger) AddAdapter(adapter ...Adapter) {
+	l.adapters = append(l.adapters, adapter...)
 }
 
 func (l *Logger) SetLevel(level int) {

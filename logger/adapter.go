@@ -1,7 +1,6 @@
-package adapter
+package logger
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -11,20 +10,6 @@ import (
 type Adapter interface {
 	Put(log *proto.LogProto)
 	Close()
-}
-
-var adapters = make(map[string]Adapter)
-
-func GetAdapter(name string) (Adapter, error) {
-	adpter, ok := adapters[name]
-	if ok {
-		return adpter, nil
-	}
-	return nil, errors.New("Need import adapter package at first:" + name)
-}
-
-func Register(name string, adapter Adapter) {
-	adapters[name] = adapter
 }
 
 // 处理适配器记录日志时产的错误，以println的方式输出至控制台。
