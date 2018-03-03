@@ -37,6 +37,10 @@ func (l *Logger) AddAdapter(adapter ...Adapter) {
 	l.adapters = append(l.adapters, adapter...)
 }
 
+func (l *Logger) SetAdapter(adapter ...Adapter) {
+	l.adapters = adapter
+}
+
 func (l *Logger) SetLevel(level int) {
 	l.IsDebug = level <= 0
 	l.IsInfo = level <= 1
