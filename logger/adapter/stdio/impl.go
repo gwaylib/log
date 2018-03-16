@@ -13,13 +13,13 @@ type Adapter struct {
 }
 
 // put a log protocol to log queue
-func (a *Adapter) Put(p *proto.Proto) {
+func (a *Adapter) Put(p *proto.LogProto) {
 	if p == nil {
 		panic("argument is nil")
 	}
 	for _, val := range p.Data {
 		date := val.Date.Format("2006-01-02 15:04:05.000")
-		a.c.Printf("%s %s [%s] %s",
+		a.c.Printf("%s %-5s [%s] %s",
 			date,
 			val.Level.ColorString(),
 			color.Cyan(val.Logger),
