@@ -13,7 +13,7 @@ type Adapter struct {
 }
 
 // put a log protocol to log queue
-func (a *Adapter) Put(p *proto.LogProto) {
+func (a *Adapter) Put(p *proto.Proto) {
 	if p == nil {
 		panic("argument is nil")
 	}
