@@ -18,13 +18,13 @@ func getIp() string {
 		ip := strings.Split(addr.String(), "/")[0]
 		code := strings.Split(ip, ".")
 		switch code[0] {
-		case "10", "127":
+		case "127":
 			continue
 		default:
 			return ip
 		}
 	}
-	panic(addrs)
+	return ""
 }
 
 func getServerName() string {
