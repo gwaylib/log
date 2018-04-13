@@ -2,6 +2,7 @@ package stdio
 
 import (
 	"github.com/gwaylib/beanmsq"
+	"github.com/gwaylib/errors"
 	"github.com/gwaylib/log/logger"
 	"github.com/gwaylib/log/logger/proto"
 )
@@ -17,18 +18,18 @@ func (a *Adapter) Put(p *proto.Proto) {
 	}
 	data, err := proto.Marshal(p)
 	if err != nil {
-		logger.FailLog(p, err)
+		logger.FailLog(errors.As(err, *p))
 		return
 	}
 	if err := a.p.Put(data); err != nil {
-		logger.FailLog(p, err)
+		logger.FailLog(errors.As(err, *p))
 		return
 	}
 }
 
 func (a *Adapter) Close() {
 	if err := a.p.Close(); err != nil {
-		println(err.Error())
+		logger.FailLog(err)
 	}
 }
 
