@@ -73,7 +73,7 @@ type Data struct {
 }
 
 func (d Data) String() string {
-	return fmt.Sprintf("%v,level:%d,logger:%s,msg:%s", d.Date, d.Level, d.Logger, string(d.Msg))
+	return fmt.Sprintf("%s,level:%d,logger:%s,msg:%s", d.Date.Format(time.RFC3339), d.Level, d.Logger, string(d.Msg))
 }
 
 type Proto struct {
