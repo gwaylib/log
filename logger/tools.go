@@ -1,33 +1,12 @@
 package logger
 
 import (
-	"net"
-	"strings"
+	"os"
 )
 
-var HostIp = getIp()
-var ServerName = getServerName()
+var HostIp = getHost()
 
-func getIp() string {
-	addrs, err := net.InterfaceAddrs()
-	if err != nil {
-		panic(err)
-	}
-
-	for _, addr := range addrs {
-		ip := strings.Split(addr.String(), "/")[0]
-		code := strings.Split(ip, ".")
-		switch code[0] {
-		case "127":
-			continue
-		default:
-			return ip
-		}
-	}
-	return ""
-}
-
-func getServerName() string {
-	// return "etlog"
-	return getIp()
+func getHost() string {
+	hostName, _ := os.Hostname()
+	return hostName
 }

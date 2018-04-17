@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	DefaultContext = proto.Context{ServerName, "1.0.0", HostIp}
+	DefaultContext = proto.Context{"default", "1.0.0", HostIp}
 )
 
 // logger for private
