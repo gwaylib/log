@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-var HostIp = getHost()
+var HostName = getHost()
 
 func getHost() string {
 	hostName, _ := os.Hostname()

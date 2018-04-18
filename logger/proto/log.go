@@ -8,7 +8,7 @@ package proto
 
 type Logger interface {
 	// 设置日志级别
-	SetLevel(level int)
+	SetLevel(level Level)
 
 	// 设置服务器信息
 	// 不设置时，使用默认配置信息

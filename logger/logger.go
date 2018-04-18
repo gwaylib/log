@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -9,7 +8,7 @@ import (
 )
 
 var (
-	DefaultContext = proto.Context{"default", "1.0.0", HostIp}
+	DefaultContext = proto.Context{"default", "1.0.0", HostName}
 )
 
 // logger for private
@@ -17,11 +16,7 @@ type Logger struct {
 	context    *proto.Context
 	adapters   []Adapter
 	loggerName string
-	IsDebug    bool
-	IsInfo     bool
-	IsWarn     bool
-	IsErr      bool
-	IsFatal    bool
+	level      proto.Level
 }
 
 func New(loggerName string, adapter ...Adapter) *Logger {
@@ -41,12 +36,8 @@ func (l *Logger) SetAdapter(adapter ...Adapter) {
 	l.adapters = adapter
 }
 
-func (l *Logger) SetLevel(level int) {
-	l.IsDebug = level <= 0
-	l.IsInfo = level <= 1
-	l.IsWarn = level <= 2
-	l.IsErr = level <= 3
-	l.IsFatal = level <= 4
+func (l *Logger) SetLevel(level proto.Level) {
+	l.level = level
 }
 
 // 设置服务器信息
@@ -55,116 +46,50 @@ func (l *Logger) SetContext(c *proto.Context) {
 	l.context = c
 }
 
-// Debug
-// debug level is use to log anything, so it will make a lot of log.
-//
-// Param
-// msg -- inteface of json object
 func (l *Logger) Debug(msg ...interface{}) {
-	if !l.IsDebug {
-		return
-	}
-
-	l.put(&proto.Data{
-		time.Now(),
-		proto.LevelDebug,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	})
+	l.put(proto.LevelDebug, proto.ToMsg(msg...))
 }
 
 func (l *Logger) Debugf(f string, msg ...interface{}) {
-	l.Debug(fmt.Sprintf(f, msg...))
+	l.put(proto.LevelDebug, proto.ToMsgf(f, msg...))
 }
 
-// Info
-// info level is used to log something is changed with program envirement.
-//
-// Param
-// msg -- inteface of json object
 func (l *Logger) Info(msg ...interface{}) {
-	if !l.IsInfo {
-		return
-	}
-	l.put(&proto.Data{
-		time.Now(),
-		proto.LevelInfo,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	})
+	l.put(proto.LevelInfo, proto.ToMsg(msg...))
 }
 
 func (l *Logger) Infof(f string, msg ...interface{}) {
-	l.Info(fmt.Sprintf(f, msg...))
+	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
 }
 
-// Warn
-// warn level is used to log program has some error in controling,
-// but if this warning happen again, program will go to error level, or panic.
-//
-// Param
-// msg -- inteface of json object
 func (l *Logger) Warn(msg ...interface{}) {
-	if !l.IsWarn {
-		return
-	}
-
-	l.put(&proto.Data{
-		time.Now(),
-		proto.LevelWarn,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	})
+	l.put(proto.LevelWarn, proto.ToMsg(msg...))
 }
 
 func (l *Logger) Warnf(f string, msg ...interface{}) {
-	l.Warn(fmt.Sprintf(f, msg...))
+	l.put(proto.LevelWarn, proto.ToMsgf(f, msg...))
 }
 
-// Error
-// error level is used to log program need someone do something immediately.
-//
-// Param
-// msg -- inteface of json object
 func (l *Logger) Error(msg ...interface{}) {
-	if !l.IsErr {
-		return
-	}
-
-	l.put(&proto.Data{
-		time.Now(),
-		proto.LevelError,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	})
+	l.put(proto.LevelError, proto.ToMsg(msg...))
 }
 
 func (l *Logger) Errorf(f string, msg ...interface{}) {
-	l.Error(fmt.Sprintf(f, msg...))
+	l.put(proto.LevelError, proto.ToMsgf(f, msg...))
 }
 
-// Fatal
-// fatal level is used to log program panic.
-//
-// Param
-// msg -- inteface of json object
 func (l *Logger) Fatal(msg ...interface{}) {
-	if !l.IsFatal {
-		return
-	}
-	data := proto.Data{
-		time.Now(),
-		proto.LevelFatal,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	}
-	l.put(&data)
+	m := proto.ToMsg(msg...)
+	l.put(proto.LevelFatal, m)
 	l.Close()
-	panic(data)
+	panic(m)
 }
 
 func (l *Logger) Fatalf(f string, msg ...interface{}) {
-	l.Fatal(fmt.Sprintf(f, msg...))
+	m := proto.ToMsgf(f, msg...)
+	l.put(proto.LevelFatal, m)
+	l.Close()
+	panic(m)
 }
 
 // Exit
@@ -174,26 +99,19 @@ func (l *Logger) Fatalf(f string, msg ...interface{}) {
 // code -- code of os exit
 // msg -- exit message
 func (l *Logger) Exit(code int, msg ...interface{}) {
-	if !l.IsFatal {
-		return
-	}
-	data := proto.Data{
-		time.Now(),
-		proto.LevelInfo,
-		l.loggerName,
-		proto.ToMsg(msg...),
-	}
-	l.put(&data)
+	m := proto.ToMsg(msg...)
+	l.put(proto.LevelInfo, m)
 	l.Close()
 	os.Exit(code)
+
 }
 
-func (l *Logger) put(data *proto.Data) {
-	if data == nil {
+func (l *Logger) put(level proto.Level, msg []byte) {
+	// ignore
+	if level < l.level {
 		return
 	}
-
-	l.Put([]*proto.Data{data})
+	l.Put([]*proto.Data{&proto.Data{time.Now(), level, l.loggerName, msg}})
 }
 
 func (l *Logger) Put(data []*proto.Data) {
