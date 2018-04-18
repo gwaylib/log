@@ -7,6 +7,10 @@ import (
 	"github.com/gwaylib/log/logger/proto"
 )
 
+var (
+	DefaultContext = proto.Context{"default", "0.0.0", HostName}
+)
+
 // logger for private
 type Logger struct {
 	context    *proto.Context
