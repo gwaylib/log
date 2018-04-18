@@ -1,18 +1,34 @@
 package log
 
 import (
+	"fmt"
 	"os"
 
+	"github.com/gwaylib/log/behavior"
 	"github.com/gwaylib/log/logger"
 	"github.com/gwaylib/log/logger/adapter/stdio"
 	"github.com/gwaylib/log/logger/proto"
 )
 
-var lg = proto.Logger(logger.New("default", stdio.New(os.Stdout)))
+var (
+	// TODO:行为日志构建
 
-// 设置默认的日志器
-func SetLogger(l proto.Logger) {
-	lg = l
+	// 日志配置信息
+	level   = proto.LevelDebug                                    // 日志输出的级别
+	ctx     = &proto.Context{"default", "1.0.0", logger.HostName} // 产生日志地方的客户端信息，用于日志服务器识别来源
+	adapter = []logger.Adapter{stdio.New(os.Stdout)}              // 日志输出适配器，用于输出日志
+	// adapter = []logger.Adapter{stdio.New(os.Stdout), server.New("127.0.0.1:11301", "log.gwaycc.com", 100)} // 日志输出适配器，用于输出日志
+	lg = New("default") // 系统默认输出前缀
+)
+
+// 快速构建一个带前缀的日志
+func New(prefix string) proto.Logger {
+	return logger.New(ctx, prefix, level, adapter...)
+}
+
+// 发送行为行为日志信息, 一般不在控制台输出, 只读录在相关文件中
+func BehaviorPut(e *behavior.Event) {
+	fmt.Println(string(e.ToJson()))
 }
 
 // 值 0

@@ -7,10 +7,6 @@ import (
 	"github.com/gwaylib/log/logger/proto"
 )
 
-var (
-	DefaultContext = proto.Context{"default", "1.0.0", HostName}
-)
-
 // logger for private
 type Logger struct {
 	context    *proto.Context
@@ -19,31 +15,14 @@ type Logger struct {
 	level      proto.Level
 }
 
-func New(loggerName string, adapter ...Adapter) *Logger {
+func New(ctx *proto.Context, loggerName string, level proto.Level, adapter ...Adapter) *Logger {
 	lg := &Logger{
+		context:    ctx,
 		adapters:   adapter,
 		loggerName: loggerName,
+		level:      level,
 	}
-	lg.SetLevel(0)
 	return lg
-}
-
-func (l *Logger) AddAdapter(adapter ...Adapter) {
-	l.adapters = append(l.adapters, adapter...)
-}
-
-func (l *Logger) SetAdapter(adapter ...Adapter) {
-	l.adapters = adapter
-}
-
-func (l *Logger) SetLevel(level proto.Level) {
-	l.level = level
-}
-
-// 设置服务器信息
-// 不设置时，使用默认配置信息
-func (l *Logger) SetContext(c *proto.Context) {
-	l.context = c
 }
 
 func (l *Logger) Debug(msg ...interface{}) {
@@ -119,16 +98,8 @@ func (l *Logger) Put(data []*proto.Data) {
 		panic("len(data) == 0")
 	}
 
-	// create log protocal
-	var context *proto.Context
-	if l.context == nil {
-		context = &DefaultContext
-	} else {
-		context = l.context
-	}
-
 	log := &proto.Proto{
-		*context,
+		l.context,
 		data,
 	}
 

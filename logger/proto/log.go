@@ -7,13 +7,6 @@
 package proto
 
 type Logger interface {
-	// 设置日志级别
-	SetLevel(level Level)
-
-	// 设置服务器信息
-	// 不设置时，使用默认配置信息
-	SetContext(c *Context)
-
 	// 值 0
 	// 调试信息,不提交服务器.
 	// 由平台控制,可控制台输出,相当于fmt.Print输出.

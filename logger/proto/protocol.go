@@ -77,8 +77,8 @@ func (d Data) String() string {
 }
 
 type Proto struct {
-	Context Context `json:"context"`
-	Data    []*Data `json:"data"`
+	Context *Context `json:"context"`
+	Data    []*Data  `json:"data"`
 }
 
 func Unmarshal(src []byte) (*Proto, error) {
