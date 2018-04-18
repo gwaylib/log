@@ -2,6 +2,7 @@ package behavior
 
 import (
 	"encoding/json"
+	"io"
 	"time"
 )
 
@@ -32,4 +33,9 @@ func Parse(src []byte) (*Event, error) {
 		return nil, err
 	}
 	return b, nil
+}
+
+type Client interface {
+	io.Closer
+	Put(*Event)
 }
