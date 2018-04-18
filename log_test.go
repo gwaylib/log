@@ -1,6 +1,7 @@
 package log
 
 import (
+	"log"
 	"testing"
 )
 
@@ -21,4 +22,7 @@ func TestApi(t *testing.T) {
 	   Fatal("echo fatal")
 	   Fatalf("echo fatal of int:%d", 1)
 	*/
+	log.Println("testing syslog")
+	log.Printf("testing syslog:%d", 1)
+	log.Printf("testing syslog:%d", 2)
 }
