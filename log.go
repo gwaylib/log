@@ -1,24 +1,19 @@
 package log
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/gwaylib/log/behavior"
 	"github.com/gwaylib/log/logger"
 	"github.com/gwaylib/log/logger/adapter/stdio"
 	"github.com/gwaylib/log/logger/proto"
 )
 
 var (
-	// TODO:行为日志构建
-
 	// 日志配置信息
 	level   = proto.LevelDebug                       // 日志输出的级别
 	ctx     = &logger.DefaultContext                 // 产生日志地方的客户端信息，用于日志服务器识别来源
 	adapter = []logger.Adapter{stdio.New(os.Stdout)} // 日志输出适配器，用于输出日志
-	// adapter = []logger.Adapter{stdio.New(os.Stdout), server.New("127.0.0.1:11301", "log.gwaycc.com", 100)} // 日志输出适配器，用于输出日志
-	lg = New("default") // 系统默认输出前缀
+	Log     = New("default")                         // 系统默认输出前缀
 )
 
 // 快速构建一个带前缀的日志
@@ -26,19 +21,14 @@ func New(prefix string) proto.Logger {
 	return logger.New(ctx, prefix, level, adapter...)
 }
 
-// 发送行为行为日志信息, 一般不在控制台输出, 只读录在相关文件中
-func BehaviorPut(e *behavior.Event) {
-	fmt.Println(string(e.ToJson()))
-}
-
 // 值 0
 // 调试信息,不提交服务器.
 // 由平台控制,可控制台输出,相当于fmt.Print输出.
 func Debug(msg ...interface{}) {
-	lg.Debug(msg...)
+	Log.Debug(msg...)
 }
 func Debugf(f string, msg ...interface{}) {
-	lg.Debugf(f, msg...)
+	Log.Debugf(f, msg...)
 }
 
 // 等同于Info
@@ -60,10 +50,10 @@ func Println(v ...interface{}) {
 // 程序运行状态信息,提交服务器.
 // 如启动、停止、重连等信息，体现了程序环境的变更状态。
 func Info(msg ...interface{}) {
-	lg.Info(msg...)
+	Log.Info(msg...)
 }
 func Infof(f string, msg ...interface{}) {
-	lg.Infof(f, msg...)
+	Log.Infof(f, msg...)
 }
 
 // 值 2
@@ -73,10 +63,10 @@ func Infof(f string, msg ...interface{}) {
 // 被攻击、硬件老化、硬件达到了承载上限、对方服务出现异常等问题。
 // 日志系统将发送一封邮件到相关人员。
 func Warn(msg ...interface{}) {
-	lg.Warn(msg...)
+	Log.Warn(msg...)
 }
 func Warnf(f string, msg ...interface{}) {
-	lg.Warnf(f, msg...)
+	Log.Warnf(f, msg...)
 }
 
 // 值 3
@@ -84,20 +74,20 @@ func Warnf(f string, msg ...interface{}) {
 // 例如：数据库不可用、充值不可用、短信不可用、vos不可用等需要及时处理的行为都可定义为此类别。
 // 日志系统将发送一封邮件、短信(或者其他实时联系方式)至相关人员
 func Error(msg ...interface{}) {
-	lg.Error(msg...)
+	Log.Error(msg...)
 }
 func Errorf(f string, msg ...interface{}) {
-	lg.Errorf(f, msg...)
+	Log.Errorf(f, msg...)
 }
 
 // 值 4
 // 检测到程序非正常结束。
 // 日志系统将调用所有实时联系方式联系相关人员处理。
 func Fatal(msg ...interface{}) {
-	lg.Fatal(msg...)
+	Log.Fatal(msg...)
 }
 func Fatalf(f string, msg ...interface{}) {
-	lg.Fatalf(f, msg...)
+	Log.Fatalf(f, msg...)
 }
 
 // 退出操作，执行关闭日志操作并调用os.Exit
@@ -108,5 +98,5 @@ func Fatalf(f string, msg ...interface{}) {
 //  msg -- 记录的消息，级别是一个Info级别.
 //
 func Exit(code int, msg ...interface{}) {
-	lg.Exit(code, msg...)
+	Log.Exit(code, msg...)
 }
