@@ -1,9 +1,9 @@
-package stdio
+package lserver
 
 import (
 	"testing"
 
-	"github.com/gwaylib/log/logger"
+	"github.com/CodeInEverest/golib/log/logger"
 )
 
 func TestPut(t *testing.T) {
