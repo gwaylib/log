@@ -1,8 +1,6 @@
 package lserver
 
 import (
-	"fmt"
-
 	"github.com/gwaylib/beanmsq"
 	"github.com/gwaylib/errors"
 	"github.com/gwaylib/log/logger"
@@ -23,7 +21,6 @@ func (a *Adapter) Put(p *proto.Proto) {
 		logger.FailLog(errors.As(err, *p))
 		return
 	}
-	fmt.Println(string(data))
 	if err := a.p.Put(data); err != nil {
 		logger.FailLog(errors.As(err, *p))
 		return
