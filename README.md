@@ -10,10 +10,12 @@ cp log.go $PJ_ROOT/src/log
 自行修改以下配置信息
 
 ```text
+
 // 日志配置信息
 level   = proto.LevelDebug                                    // 日志输出的级别
 ctx     = &proto.Context{"default", "1.0.0", logger.HostName} // 产生日志地方的客户端信息，用于日志服务器识别来源
 adapter = []logger.Adapter{stdio.New(os.Stdout)}              // 日志输出适配器，用于输出日志
+
 // 日志输出适配器，用于输出日志
 // 日志服务器依赖于github.com/gwaycc/lserver项目
 // adapter = []logger.Adapter{stdio.New(os.Stdout), lserver.New("127.0.0.1:11301", "log.gwaycc.com", 100)}
