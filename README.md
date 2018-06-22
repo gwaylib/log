@@ -3,8 +3,8 @@
 
 在具体项目中构建一个log包
 ```text
-mkdir $PJ_ROOT/src/log
-cp log.go $PJ_ROOT/src/log
+mkdir $GOSPACE/src/log
+cp log.go $GOSPACE/src/log
 ```
 
 自行修改以下配置信息
