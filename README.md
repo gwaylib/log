@@ -3,8 +3,8 @@
 
 在具体项目中构建一个log包
 ```text
-mkdir $GOSPACE/src/log
-cp log.go $GOSPACE/src/log
+mkdir $PRJ_ROOT/src/log
+cp log.go $PRJ_ROOT/src/log
 ```
 
 自行修改以下配置信息
