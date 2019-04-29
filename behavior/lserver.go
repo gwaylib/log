@@ -12,7 +12,13 @@ type lserverAdapter struct {
 
 // put a log protocol to log queue
 func (a *lserverAdapter) Put(e *Event) {
-	if err := a.p.Put(e.ToJson()); err != nil {
+	data := e.ToJson()
+	// 16*1024*1024(16M)
+	if len(data) > 16777216 {
+		logger.FailLog(errors.New("data too big").As(*e))
+		return
+	}
+	if err := a.p.Put(data); err != nil {
 		logger.FailLog(errors.As(err, *e))
 		return
 	}

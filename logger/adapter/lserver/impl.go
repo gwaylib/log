@@ -21,6 +21,11 @@ func (a *Adapter) Put(p *proto.Proto) {
 		logger.FailLog(errors.As(err, *p))
 		return
 	}
+	// 16*1024*1024(16M)
+	if len(data) > 16777216 {
+		logger.FailLog(errors.New("data too big").As(err, *p))
+		return
+	}
 	if err := a.p.Put(data); err != nil {
 		logger.FailLog(errors.As(err, *p))
 		return
