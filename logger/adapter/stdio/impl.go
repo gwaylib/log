@@ -1,6 +1,7 @@
 package stdio
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/gwaylib/log/logger"
@@ -9,7 +10,8 @@ import (
 )
 
 type Adapter struct {
-	c *color.Color
+	stdout *color.Color
+	stderr *color.Color
 }
 
 // put a log protocol to log queue
@@ -19,22 +21,30 @@ func (a *Adapter) Put(p *proto.Proto) {
 	}
 	for _, val := range p.Data {
 		date := val.Date.Format("2006-01-02 15:04:05.000")
-		a.c.Printf("%s %-5s [%s] %s",
+		output := fmt.Sprintf("%s %-5s [%s] %s",
 			date,
 			val.Level.ColorString(),
 			color.Cyan(val.Logger),
 			string(val.Msg),
 		)
+		if val.Level == proto.LevelDebug {
+			a.stdout.Print(output)
+		} else {
+			a.stderr.Print(output)
+		}
 	}
 }
 
 func (a *Adapter) Close() {
 }
 
-func New(out io.Writer) logger.Adapter {
-	c := new(color.Color)
-	c.SetOutput(out)
+func New(stdout, stderr io.Writer) logger.Adapter {
+	stdoutC := new(color.Color)
+	stdoutC.SetOutput(stdout)
+	stderrC := new(color.Color)
+	stderrC.SetOutput(stderr)
 	return &Adapter{
-		c: c,
+		stdout: stdoutC,
+		stderr: stderrC,
 	}
 }

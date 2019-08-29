@@ -10,10 +10,10 @@ import (
 
 var (
 	// 日志配置信息
-	level   = proto.LevelDebug                       // 日志输出的级别
-	ctx     = &logger.DefaultContext                 // 产生日志地方的客户端信息，用于日志服务器识别来源
-	adapter = []logger.Adapter{stdio.New(os.Stdout)} // 日志输出适配器，用于输出日志
-	Log     = New("default")                         // 系统默认输出前缀
+	level   = proto.LevelDebug                                  // 日志输出的级别
+	ctx     = &logger.DefaultContext                            // 产生日志地方的客户端信息，用于日志服务器识别来源
+	adapter = []logger.Adapter{stdio.New(os.Stdout, os.Stderr)} // 日志输出适配器，用于输出日志
+	Log     = New("default")                                    // 系统默认输出前缀
 )
 
 // 快速构建一个带前缀的日志
