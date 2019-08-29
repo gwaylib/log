@@ -8,13 +8,13 @@ import (
 )
 
 func TestPut(t *testing.T) {
-	log := logger.New("testing", New(os.Stdout))
+	log := logger.New(&logger.DefaultContext, "testing", 0, New(os.Stdout, os.Stderr))
 	log.Debug("debug")
 	log.Debug([]byte{0xff})
 	log.Info("info")
 	log.Warn("warn")
 	log.Error("error")
-	//log.Fatal("fatal")
+	// log.Fatal("fatal")
 	log.Exit(0, "exit")
 	log.Close()
 }

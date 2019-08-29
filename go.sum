@@ -1,6 +1,12 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/gwaylib/beanmsq v0.0.0-20190326081523-eda206cf81a9 h1:8Woy0a7BV95kwZRu/AuJLD/QBUrKEcwA2gtxYnSC+ak=
+github.com/gwaylib/beanmsq v0.0.0-20190326081523-eda206cf81a9/go.mod h1:zASOVPtMKgmjwI28EvSQnBC748mwNA0lubqKpzVbVSw=
 github.com/gwaylib/errors v0.0.0-20190718041537-e442aeb61900 h1:UfAB04zArgj1ILiSPPoMbR4Im7IJ5eqyeJ6zVh2xctE=
 github.com/gwaylib/errors v0.0.0-20190718041537-e442aeb61900/go.mod h1:mc+ainsF9wgufeFi7TzP0n82I1NPYj7DvUJ6noSszD8=
+github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31 h1:pYeOIZnfAA9kUZFYC6BF8iElFnmOJlfpQLTTw4ENPLM=
+github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31/go.mod h1:9ERvzhQ09s9SfQ7LjjF6FwUDnfkdZJUCN3vOUE+NtP8=
+github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858 h1:kkNVQqyYyI0SsW9sOUEAKiLzoJGzW1ZVoYQCUmrAowE=
+github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858/go.mod h1:S640fId9Ag4k2hh6Hwwj62pMSZqfMtg/kfKPeAOhET8=
 github.com/labstack/gommon v0.3.0 h1:JEeO0bvc78PKdyHxloTKiF8BD5iGrH8T6MSeGvSgob0=
 github.com/labstack/gommon v0.3.0/go.mod h1:MULnywXg0yavhxWKc+lOruYdAhDwPK9wf0OL7NoOu+k=
 github.com/mattn/go-colorable v0.1.2 h1:/bC9yWikZXAL9uJdulbSfyVNIR3n3trXl+v8+1sx8mU=

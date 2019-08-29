@@ -26,15 +26,15 @@ func (l Level) Int() int {
 func (l Level) ColorString() string {
 	switch l {
 	case LevelDebug:
-		return color.White("DEBUG")
+		return color.White("DEBU")
 	case LevelInfo:
-		return color.Green("INFO ")
+		return color.Green("INFO")
 	case LevelWarn:
-		return color.Yellow("WARN ")
+		return color.Yellow("WARN")
 	case LevelError:
-		return color.Red("ERROR")
+		return color.Red("ERRO")
 	case LevelFatal:
-		return color.Red("FATAL")
+		return color.Red("FATA")
 	}
 	return color.Reset(strconv.Itoa(int(l)))
 }

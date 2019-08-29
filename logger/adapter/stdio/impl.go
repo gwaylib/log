@@ -20,7 +20,7 @@ func (a *Adapter) Put(p *proto.Proto) {
 		panic("argument is nil")
 	}
 	for _, val := range p.Data {
-		date := val.Date.Format("2006-01-02 15:04:05.000")
+		date := val.Date.Format("2006-01-02T15:04:05.000Z07:00")
 		output := fmt.Sprintf("%s %-5s [%s] %s",
 			date,
 			val.Level.ColorString(),
