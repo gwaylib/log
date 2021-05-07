@@ -19,6 +19,10 @@ type Logger interface {
 	Info(msg ...interface{})
 	Infof(f string, msg ...interface{})
 
+	// 同Info
+	Print(msg ...interface{})
+	Printf(f string, msg ...interface{})
+
 	// 值 2
 	// 程序异常信息，提交服务器. 本类别不影响程序继续使用,但其结果可能会引出潜在的重大问题.
 	// 例如：请求的数据格式错误；网络连接错误(但重新连接后可自动修复), 连接超时等行为。
