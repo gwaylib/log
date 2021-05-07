@@ -28,9 +28,9 @@ func (a *Adapter) Put(p *proto.Proto) {
 			string(val.Msg),
 		)
 		if a.stderr != nil {
-			a.stdout.Print(output)
-		} else if a.stdout != nil {
 			a.stderr.Print(output)
+		} else if a.stdout != nil {
+			a.stdout.Print(output)
 		}
 	}
 }
