@@ -33,12 +33,12 @@ func Debugf(f string, msg ...interface{}) {
 
 // 等同于Info
 func Print(v ...interface{}) {
-	Info(v...)
+	Log.Print(v...)
 }
 
 // 等同于Info
 func Printf(format string, v ...interface{}) {
-	Infof(format, v...)
+	Log.Printf(format, v...)
 }
 
 // 等同于Info

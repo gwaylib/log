@@ -27,9 +27,9 @@ func (a *Adapter) Put(p *proto.Proto) {
 			color.Cyan(val.Logger),
 			string(val.Msg),
 		)
-		if val.Level == proto.LevelDebug {
+		if a.stderr != nil {
 			a.stdout.Print(output)
-		} else {
+		} else if a.stdout != nil {
 			a.stderr.Print(output)
 		}
 	}

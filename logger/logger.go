@@ -44,6 +44,13 @@ func (l *Logger) Info(msg ...interface{}) {
 func (l *Logger) Infof(f string, msg ...interface{}) {
 	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
 }
+func (l *Logger) Print(msg ...interface{}) {
+	l.put(proto.LevelInfo, proto.ToMsg(msg...))
+}
+
+func (l *Logger) Printf(f string, msg ...interface{}) {
+	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
+}
 
 func (l *Logger) Warn(msg ...interface{}) {
 	l.put(proto.LevelWarn, proto.ToMsg(msg...))
