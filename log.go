@@ -82,11 +82,18 @@ func Errorf(f string, msg ...interface{}) {
 
 // 值 4
 // 检测到程序非正常结束。
-// 日志系统将调用所有实时联系方式联系相关人员处理。
+// 日志系统应调用所有实时联系方式联系相关人员处理。
 func Fatal(msg ...interface{}) {
 	Log.Fatal(msg...)
 }
 func Fatalf(f string, msg ...interface{}) {
+	Log.Fatalf(f, msg...)
+}
+
+func Panic(msg ...interface{}) {
+	Log.Fatal(msg...)
+}
+func Panicf(f string, msg ...interface{}) {
 	Log.Fatalf(f, msg...)
 }
 

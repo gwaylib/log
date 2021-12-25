@@ -19,7 +19,7 @@ type Logger interface {
 	Info(msg ...interface{})
 	Infof(f string, msg ...interface{})
 
-	// 同Info
+	// Same as Info level
 	Print(msg ...interface{})
 	Printf(f string, msg ...interface{})
 
@@ -44,6 +44,10 @@ type Logger interface {
 	// 日志系统将调用所有实时联系方式联系相关人员处理。
 	Fatal(msg ...interface{})
 	Fatalf(f string, msg ...interface{})
+
+	// Same as Fatal level
+	Panic(msg ...interface{})
+	Panicf(f string, msg ...interface{})
 
 	// 关闭日志器
 	// 当不再使用日志时，应调用关闭，以使用日志的缓冲得到输出。

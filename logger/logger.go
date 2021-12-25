@@ -68,6 +68,13 @@ func (l *Logger) Errorf(f string, msg ...interface{}) {
 	l.put(proto.LevelError, proto.ToMsgf(f, msg...))
 }
 
+func (l *Logger) Panic(msg ...interface{}) {
+	l.Fatal(msg...)
+}
+func (l *Logger) Panicf(f string, msg ...interface{}) {
+	l.Fatalf(f, msg...)
+}
+
 func (l *Logger) Fatal(msg ...interface{}) {
 	m := proto.ToMsg(msg...)
 	l.put(proto.LevelFatal, m)
@@ -93,7 +100,6 @@ func (l *Logger) Exit(code int, msg ...interface{}) {
 	l.put(proto.LevelInfo, m)
 	l.Close()
 	os.Exit(code)
-
 }
 
 func (l *Logger) put(level proto.Level, msg []byte) {
