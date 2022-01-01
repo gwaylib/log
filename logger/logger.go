@@ -29,6 +29,10 @@ func New(ctx *proto.Context, loggerName string, level proto.Level, adapter ...Ad
 	return lg
 }
 
+func NewDefaultLogger(loggerName string, adapter ...Adapter) *Logger {
+	return New(&DefaultContext, loggerName, proto.LevelDebug, adapter...)
+}
+
 func (l *Logger) Debug(msg ...interface{}) {
 	l.put(proto.LevelDebug, proto.ToMsg(msg...))
 }

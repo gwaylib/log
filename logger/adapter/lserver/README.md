@@ -1,2 +1,6 @@
-# TODO
-开放日志服务器
+Message queue on beanstalkd
+
+Depends on beanstalkd, you can install it on Debian by 
+```
+apt-get install beanstalkd
+```
