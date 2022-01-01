@@ -10,6 +10,7 @@ Change the hard code in your project
 ```golang 
 var (
 	level   = proto.LevelDebug // set the default log level
+	ctx     = &logger.DefaultContext
 	adapter []logger.Adapter 
 	Log     = New("your program name") // set your logger name
 )

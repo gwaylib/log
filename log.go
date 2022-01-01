@@ -10,6 +10,7 @@ import (
 
 var (
 	level   = proto.LevelDebug // set the default log level
+	ctx     = &logger.DefaultContext
 	adapter []logger.Adapter
 	Log     = New("default")
 )
