@@ -3,10 +3,14 @@ github.com/gomodule/redigo v1.8.6 h1:h7kHSqUl2kxeaQtVslsfUCPJ1oz2pxcyzLy4zezIzPw
 github.com/gomodule/redigo v1.8.6/go.mod h1:P9dn9mFrCBvWhGE1wpxx6fgq7BAeLBk+UUUzlpkBYO0=
 github.com/gwaylib/beanmsq v0.0.0-20190326081523-eda206cf81a9 h1:8Woy0a7BV95kwZRu/AuJLD/QBUrKEcwA2gtxYnSC+ak=
 github.com/gwaylib/beanmsq v0.0.0-20190326081523-eda206cf81a9/go.mod h1:zASOVPtMKgmjwI28EvSQnBC748mwNA0lubqKpzVbVSw=
+github.com/gwaylib/beanmsq v0.0.0-20191004162047-d6c38552be56 h1:8YkeeKZE9DJP/FMNnBJ7Db5yc+F+gD7qXisEkW6SaQI=
+github.com/gwaylib/beanmsq v0.0.0-20191004162047-d6c38552be56/go.mod h1:k0nthy2ZZ02YmdI+aCtONCIUj0z9RHfoo0HBImRUPn8=
 github.com/gwaylib/errors v0.0.0-20190718041537-e442aeb61900 h1:UfAB04zArgj1ILiSPPoMbR4Im7IJ5eqyeJ6zVh2xctE=
 github.com/gwaylib/errors v0.0.0-20190718041537-e442aeb61900/go.mod h1:mc+ainsF9wgufeFi7TzP0n82I1NPYj7DvUJ6noSszD8=
+github.com/gwaylib/errors v0.0.0-20190905023356-162e59439c92/go.mod h1:+HS/JYB/LwqAWsVPCZHFYhwdDiQ/N2kuUqhYD44tfpY=
 github.com/gwaylib/errors v0.0.0-20211126090330-1931a9c4fe20 h1:W6prxa2UjlXcN7Lkt3pbRNhS2IKIqlY/+o99tgDuA/8=
 github.com/gwaylib/errors v0.0.0-20211126090330-1931a9c4fe20/go.mod h1:+HS/JYB/LwqAWsVPCZHFYhwdDiQ/N2kuUqhYD44tfpY=
+github.com/gwaylib/log v0.0.0-20190829041528-b6c28711ef53/go.mod h1:FwuJtWmicMfzgmySG/QzJZL5J5qiMULuWgvT4qXZTgI=
 github.com/gwaylib/redis v0.0.0-20211227074640-be0f92968270 h1:cgYspu6Oy69xb7o/myLc6llyNhdJjMviIKwFT4whmto=
 github.com/gwaylib/redis v0.0.0-20211227074640-be0f92968270/go.mod h1:cxir25v8NPKIh1ZSjahoUU0MFLa88RbTpO1F4C4/mQ0=
 github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31 h1:pYeOIZnfAA9kUZFYC6BF8iElFnmOJlfpQLTTw4ENPLM=

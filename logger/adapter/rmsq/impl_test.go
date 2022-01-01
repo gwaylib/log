@@ -1,4 +1,4 @@
-package lserver
+package rmsq
 
 import (
 	"testing"

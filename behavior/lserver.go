@@ -1,3 +1,4 @@
+// Deprecated, use rmsq-server instead
 package behavior
 
 import (

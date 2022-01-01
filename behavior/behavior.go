@@ -6,16 +6,15 @@ import (
 )
 
 type Event struct {
+	IndexKey string // need build index key your self
+
+	ReqHeader  string
+	ReqParams  string
+	RespStatus string
+	RespParams string
+
+	UseTime   time.Duration
 	EventTime time.Time
-	EventKey  string
-
-	FromIp    string
-	ReqMethod string
-	ReqBody   string
-	RespCode  string
-	RespBody  string
-
-	UseTime int64
 }
 
 func (b *Event) ToJson() []byte {
