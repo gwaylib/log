@@ -9,18 +9,13 @@ import (
 )
 
 var (
-	level   = proto.LevelDebug // set the default log level
-	ctx     = &logger.DefaultContext
-	adapter []logger.Adapter
-	Log     = New("default")
+	level = proto.LevelDebug // set the default log level
+	ctx   = &logger.DefaultContext
+	Log   = New("default")
 )
 
-func init() {
-	// implement the adapter what you need.
-	adapter = []logger.Adapter{stdio.New(os.Stdout, os.Stderr)}
-}
-
 func New(prefix string) proto.Logger {
+	adapter := []logger.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
 	return logger.New(ctx, prefix, level, adapter...)
 }
 
