@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gwaylib/errors"
-	"github.com/gwaylib/log/logger"
+	"github.com/gwaylib/log/proto"
 	"github.com/gwaylib/redis"
 	rmsq "github.com/gwaylib/redis/msq"
 )
@@ -23,18 +23,18 @@ func (a *rmsqAdapter) Put(p *Event) {
 	data := p.ToJson()
 	// 16*1024*1024(16M)
 	if len(data) > 16777216 {
-		logger.FailLog(errors.New("data too big").As(*p))
+		proto.FailLog(errors.New("data too big").As(*p))
 		return
 	}
 	if err := a.p.Put(fmt.Sprintf("%x", md5.Sum(data)), data); err != nil {
-		logger.FailLog(errors.As(err, *p))
+		proto.FailLog(errors.As(err, *p))
 		return
 	}
 }
 
 func (a *rmsqAdapter) Close() {
 	if err := a.rs.Close(); err != nil {
-		logger.FailLog(err)
+		proto.FailLog(err)
 	}
 }
 

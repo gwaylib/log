@@ -4,7 +4,7 @@ package behavior
 import (
 	"github.com/gwaylib/beanmsq"
 	"github.com/gwaylib/errors"
-	"github.com/gwaylib/log/logger"
+	"github.com/gwaylib/log/proto"
 )
 
 type lserverAdapter struct {
@@ -16,18 +16,18 @@ func (a *lserverAdapter) Put(e *Event) {
 	data := e.ToJson()
 	// 16*1024*1024(16M)
 	if len(data) > 16777216 {
-		logger.FailLog(errors.New("data too big").As(*e))
+		proto.FailLog(errors.New("data too big").As(*e))
 		return
 	}
 	if err := a.p.Put(data); err != nil {
-		logger.FailLog(errors.As(err, *e))
+		proto.FailLog(errors.As(err, *e))
 		return
 	}
 }
 
 func (a *lserverAdapter) Close() {
 	if err := a.p.Close(); err != nil {
-		logger.FailLog(err)
+		proto.FailLog(err)
 	}
 }
 
