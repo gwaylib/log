@@ -15,6 +15,6 @@ func TestPut(t *testing.T) {
 	log.Warn("warn")
 	log.Error("error")
 	// log.Fatal("fatal")
-	log.Exit(0, "exit")
+	//log.Exit(0, "exit")
 	log.Close()
 }

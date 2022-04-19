@@ -2,21 +2,26 @@ package log
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/gwaylib/log/logger"
 	"github.com/gwaylib/log/logger/adapter/stdio"
-	"github.com/gwaylib/log/logger/proto"
+	"github.com/gwaylib/log/proto"
+)
+
+const (
+	GWAYLIB_LOG_LEVEL_NAME = "GWAYLIB_LOG_LEVEL"
 )
 
 var (
-	level = proto.LevelDebug // set the default log level
-	ctx   = &logger.DefaultContext
-	Log   = New("default")
+	Log = New("default")
 )
 
 func New(prefix string) proto.Logger {
-	adapter := []logger.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
-	return logger.New(ctx, prefix, level, adapter...)
+	level, _ := strconv.Atoi(os.Getenv(GWAYLIB_LOG_LEVEL_NAME))
+	ctx := &logger.DefaultContext
+	adapter := []proto.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
+	return logger.New(ctx, prefix, proto.Level(level), adapter...)
 }
 
 // Debug level, for developer println the debug message.

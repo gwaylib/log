@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/gwaylib/log/logger"
-	"github.com/gwaylib/log/logger/proto"
+	"github.com/gwaylib/log/proto"
 	"github.com/labstack/gommon/color"
 )
 
@@ -38,7 +37,7 @@ func (a *Adapter) Put(p *proto.Proto) {
 func (a *Adapter) Close() {
 }
 
-func New(stdout, stderr io.Writer) logger.Adapter {
+func New(stdout, stderr io.Writer) proto.Adapter {
 	stdoutC := new(color.Color)
 	stdoutC.SetOutput(stdout)
 	stderrC := new(color.Color)

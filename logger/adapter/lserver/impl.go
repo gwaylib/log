@@ -3,8 +3,7 @@ package lserver
 import (
 	"github.com/gwaylib/beanmsq"
 	"github.com/gwaylib/errors"
-	"github.com/gwaylib/log/logger"
-	"github.com/gwaylib/log/logger/proto"
+	"github.com/gwaylib/log/proto"
 )
 
 type Adapter struct {
@@ -18,27 +17,27 @@ func (a *Adapter) Put(p *proto.Proto) {
 	}
 	data, err := proto.Marshal(p)
 	if err != nil {
-		logger.FailLog(errors.As(err, *p))
+		proto.FailLog(errors.As(err, *p))
 		return
 	}
 	// 16*1024*1024(16M)
 	if len(data) > 16777216 {
-		logger.FailLog(errors.New("data too big").As(err, *p))
+		proto.FailLog(errors.New("data too big").As(err, *p))
 		return
 	}
 	if err := a.p.Put(data); err != nil {
-		logger.FailLog(errors.As(err, *p))
+		proto.FailLog(errors.As(err, *p))
 		return
 	}
 }
 
 func (a *Adapter) Close() {
 	if err := a.p.Close(); err != nil {
-		logger.FailLog(err)
+		proto.FailLog(err)
 	}
 }
 
-func New(addr, tube string, pool int) logger.Adapter {
+func New(addr, tube string, pool int) proto.Adapter {
 	return &Adapter{
 		p: beanmsq.NewProducer(pool, addr, tube),
 	}

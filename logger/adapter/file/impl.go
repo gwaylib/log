@@ -5,8 +5,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/gwaylib/log/logger"
-	"github.com/gwaylib/log/logger/proto"
+	"github.com/gwaylib/log/proto"
 )
 
 type Adapter struct {
@@ -50,11 +49,11 @@ func (a *Adapter) run() {
 	}
 }
 
-func New(fileName string) logger.Adapter {
+func New(fileName string) proto.Adapter {
 	return NewFile(fileName, math.MaxInt32, 1024*1024)
 }
 
-func NewFile(fileName string, backups int32, fileSize int64) logger.Adapter {
+func NewFile(fileName string, backups int32, fileSize int64) proto.Adapter {
 	a := &Adapter{
 		fileName:   fileName,
 		backups:    backups,

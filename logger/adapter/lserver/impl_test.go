@@ -7,7 +7,7 @@ import (
 )
 
 func TestPut(t *testing.T) {
-	log := logger.New("testing", New("127.0.0.1:11301", "log.gway.cc", 100))
+	log := logger.NewDefaultLogger("testing", New("127.0.0.1:11301", "log.gway.cc", 100))
 	log.Debug("debug")
 	log.Debug([]byte{0xff})
 	log.Info("info")

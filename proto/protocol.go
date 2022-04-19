@@ -97,7 +97,6 @@ func Marshal(l *Proto) ([]byte, error) {
 	return data, nil
 }
 
-// 生成msg的方法
 func ToMsg(i ...interface{}) []byte {
 	return []byte(fmt.Sprintln(i...))
 }

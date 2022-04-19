@@ -1,43 +1,62 @@
-Example:
+## Using gwaylib/log
+The number of logs should not be too many in the release program, which may affect the program performance.<br/>
+In the call, the logger adopts the function of asynchronous cache to improve the execution efficiency of the log. The cache value is determined by the adapter implements, and the default is 10 items cache.<br/>
+The log should be closed after use to ensure that the cached data can be output. If the cached data cannot be output, the error will be transferred by the adapter.<br/>
 
-Create a log package in in your project.
-```shell
-mkdir $PRJ_ROOT/src/log
-cp log.go $PRJ_ROOT/src/log
+## About using log level
+DEBUG <br/>
+Debugging information, output only during debugging. <br/>
+It is controlled by the platform and can be output to the console, which is equivalent to fmt.Print output.<br/>
+
+INFO <br/>
+Program running status change information.<br/>
+Such as start, stop, reconnection and other information, which reflects the change state of the program environment.<br/>
+
+WARN <br/>
+Program exception information.<br/>
+This category does not affect the continued use of the program, but its results may lead to potential major problems.<br/>
+For example: some unknown errors; Network connection error (but it can be repaired automatically after reconnection), connection timeout, etc.<br/>
+If there are too many such exceptions in a period of time, the causes should be analyzed, such as possible problems:<br/>
+Being attacked, hardware aging, hardware reaching the upper limit of bearing capacity, abnormal service of the other party, etc. <br/>
+The log adapter recommends sending an email to relevant personnel.<br/>
+
+ERROR<br/>
+Program fatal error message. <br/>
+This error will affect the normal logic, and even the platform panic and stop the service. <br/>
+For example, behaviors that need to be handled in time, such as database unavailable, recharge unavailable, SMS unavailable, and Vos unavailable, can be defined as this category. <br/>
+The log adapter recommends sending an email, real-time SMS or telephone (or other real-time contact information) to notify relevant personnel.<br/>
+
+FATAL<br/>
+The program ended abnormally.<br/>
+The log adapter recommends calling all real-time contact information and contacting relevant personnel for processing.<br/>
+
+## Default use case:
+
+```
+import (
+  "github.com/gwaylib/log"
+)
+
+func main() {
+  log.Info("OK")
+}
 ```
 
-Change the hard code in your project
-```golang 
-var (
-	level   = proto.LevelDebug // set the default log level
-	ctx     = &logger.DefaultContext
-	adapter []logger.Adapter 
-	Log     = New("your program name") // set your logger name
+## Custom a logger
+```
+import (
+  "github.com/gwaylib/log"
+  "github.com/gwaylib/logger"
 )
 
 func init() {
-	// implement the adapter what you need.
-	adapter = []logger.Adapter{stdio.New(os.Stdout, os.Stderr)}
+  // make a custom logger 
+  level, _ := strconv.Atoi(os.Getenv(log.GWAYLIB_LOG_LEVEL_NAME))
+  adapter = []logger.Adapter{stdio.New(os.Stdout)}
+  log.Log = logger.New(&logger.DefaultContext, "appname", proto.Levev(level), adapter...)
+}
+
+func main() {
+  log.Info("OK")
 }
 ```
-
-// Call your log package with default logger name.
-```golang 
-import "gomod-path/log" // replace gomod-path to your real package path.
-
-func main(){
-    log.Info("Hello")
-}
-```
-
-// Call your log package with a defined logger name.
-```golang 
-import l "gomod-path/log" // replace gomod-path to your real package path.
-
-var log = l.New("testing") // define a special logger name.
-
-func main(){
-    log.Info("Hello")
-}
-```
-
