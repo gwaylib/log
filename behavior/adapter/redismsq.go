@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gwaylib/errors"
+	"github.com/gwaylib/log/behavior"
 	"github.com/gwaylib/log/proto"
 	"github.com/gwaylib/redis"
 	rmsq "github.com/gwaylib/redis/msq"
@@ -15,7 +16,7 @@ type rmsqAdapter struct {
 }
 
 // put a log protocol to log queue
-func (a *rmsqAdapter) Put(p *Event) {
+func (a *rmsqAdapter) Put(p *behavior.Event) {
 	if p == nil {
 		panic("argument is nil")
 	}
@@ -37,7 +38,7 @@ func (a *rmsqAdapter) Close() {
 	}
 }
 
-func NewRMSQClient(rs *redis.RediStore, streamName string) Client {
+func NewRMSQClient(rs *redis.RediStore, streamName string) behavior.Client {
 	return &rmsqAdapter{
 		p: rmsq.NewMsqProducer(rs, streamName),
 	}
