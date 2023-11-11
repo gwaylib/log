@@ -1,4 +1,4 @@
-package rmsq
+package redismsq
 
 import (
 	"testing"

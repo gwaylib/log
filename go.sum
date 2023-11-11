@@ -17,6 +17,8 @@ github.com/gwaylib/log v0.0.0-20190829041528-b6c28711ef53/go.mod h1:FwuJtWmicMfz
 github.com/gwaylib/log v0.0.0-20220419073537-947266e45ac7/go.mod h1:zq3Y/bzQMZotPXanUMhOZUlMpBTbEeVzen94rNUIY1I=
 github.com/gwaylib/redis v0.0.0-20211227074640-be0f92968270 h1:cgYspu6Oy69xb7o/myLc6llyNhdJjMviIKwFT4whmto=
 github.com/gwaylib/redis v0.0.0-20211227074640-be0f92968270/go.mod h1:cxir25v8NPKIh1ZSjahoUU0MFLa88RbTpO1F4C4/mQ0=
+github.com/gwaylib/redis v0.0.0-20231110105356-a4910e0c1eaf h1:1TW2pzpv22QPITCANQKnO+0JEiWR18PMQHTYzW1zyEg=
+github.com/gwaylib/redis v0.0.0-20231110105356-a4910e0c1eaf/go.mod h1:cxir25v8NPKIh1ZSjahoUU0MFLa88RbTpO1F4C4/mQ0=
 github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31 h1:pYeOIZnfAA9kUZFYC6BF8iElFnmOJlfpQLTTw4ENPLM=
 github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31/go.mod h1:9ERvzhQ09s9SfQ7LjjF6FwUDnfkdZJUCN3vOUE+NtP8=
 github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858 h1:kkNVQqyYyI0SsW9sOUEAKiLzoJGzW1ZVoYQCUmrAowE=

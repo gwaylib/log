@@ -1,4 +1,4 @@
-package rmsq
+package redismsq
 
 import (
 	"crypto/md5"
@@ -11,8 +11,7 @@ import (
 )
 
 type Adapter struct {
-	rs *redis.RediStore
-	p  *rmsq.RedisMsqProducer
+	p rmsq.MsqProducer
 }
 
 // put a log protocol to log queue
@@ -37,14 +36,13 @@ func (a *Adapter) Put(p *proto.Proto) {
 }
 
 func (a *Adapter) Close() {
-	if err := a.rs.Close(); err != nil {
+	if err := a.p.Close(); err != nil {
 		proto.FailLog(err)
 	}
 }
 
 func New(rs *redis.RediStore, streamName string) proto.Adapter {
 	return &Adapter{
-		rs: rs,
-		p:  rmsq.NewRedisMsqProducer(rs, streamName),
+		p: rmsq.NewMsqProducer(rs, streamName),
 	}
 }

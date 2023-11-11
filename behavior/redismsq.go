@@ -11,8 +11,7 @@ import (
 )
 
 type rmsqAdapter struct {
-	rs *redis.RediStore
-	p  *rmsq.RedisMsqProducer
+	p rmsq.MsqProducer
 }
 
 // put a log protocol to log queue
@@ -33,14 +32,13 @@ func (a *rmsqAdapter) Put(p *Event) {
 }
 
 func (a *rmsqAdapter) Close() {
-	if err := a.rs.Close(); err != nil {
+	if err := a.p.Close(); err != nil {
 		proto.FailLog(err)
 	}
 }
 
 func NewRMSQClient(rs *redis.RediStore, streamName string) Client {
 	return &rmsqAdapter{
-		rs: rs,
-		p:  rmsq.NewRedisMsqProducer(rs, streamName),
+		p: rmsq.NewMsqProducer(rs, streamName),
 	}
 }
