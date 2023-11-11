@@ -1,5 +1,5 @@
-// Deprecated, use rmsq-server instead
-package behavior
+// Deprecated, use redismsq instead
+package adapter
 
 import (
 	"github.com/gwaylib/beanmsq"

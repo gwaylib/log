@@ -1,4 +1,4 @@
-package behavior
+package adapter
 
 import (
 	"crypto/md5"
