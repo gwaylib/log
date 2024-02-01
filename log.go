@@ -10,6 +10,12 @@ import (
 )
 
 const (
+	// Setting the log level
+	// 0 debug or above
+	// 1 info or above
+	// 2 warn or above
+	// 3 error or above
+	// 4 fatal
 	GWAYLIB_LOG_LEVEL_NAME = "GWAYLIB_LOG_LEVEL"
 )
 
@@ -120,8 +126,9 @@ func Panicf(f string, msg ...interface{}) {
 // 对于可执行程序来说，日志的退出意味着程序的退出。
 //
 // Params
-//  code -- code to call os.Exit
-//  msg -- message log in information level.
+//
+//	code -- code to call os.Exit
+//	msg -- message log in information level.
 func Exit(code int, msg ...interface{}) {
 	Log.Exit(code, msg...)
 }
