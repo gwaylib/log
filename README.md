@@ -51,7 +51,7 @@ import (
 
 func init() {
   // make a custom logger 
-  level, _ := strconv.Atoi(os.Getenv(log.GWAYLIB_LOG_LEVEL_NAME))
+  level, _ := strconv.Atoi(os.Getenv(log.GWAYLIB_LOG_LEVEL))
   adapter = []logger.Adapter{stdio.New(os.Stdout)}
   log.Log = logger.New(&logger.DefaultContext, "appname", proto.Levev(level), adapter...)
 }

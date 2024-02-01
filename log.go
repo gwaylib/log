@@ -16,7 +16,7 @@ const (
 	// 2 warn or above
 	// 3 error or above
 	// 4 fatal
-	GWAYLIB_LOG_LEVEL_NAME = "GWAYLIB_LOG_LEVEL"
+	GWAYLIB_LOG_LEVEL = "GWAYLIB_LOG_LEVEL"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 )
 
 func New(prefix string) proto.Logger {
-	level, _ := strconv.Atoi(os.Getenv(GWAYLIB_LOG_LEVEL_NAME))
+	level, _ := strconv.Atoi(os.Getenv(GWAYLIB_LOG_LEVEL))
 	ctx := &logger.DefaultContext
 	adapter := []proto.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
 	return logger.New(ctx, prefix, proto.Level(level), adapter...)
