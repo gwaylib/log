@@ -25,11 +25,7 @@ type Logger struct {
 	callerDepth int
 }
 
-func New(ctx *proto.Context, loggerName string, level proto.Level, adapter ...proto.Adapter) *Logger {
-	callerDepth := 0
-	if len(loggerName) == 0 {
-		callerDepth = 4
-	}
+func New(ctx *proto.Context, loggerName string, callerDepth int, level proto.Level, adapter ...proto.Adapter) *Logger {
 	lg := &Logger{
 		context:     ctx,
 		adapters:    adapter,
@@ -41,7 +37,7 @@ func New(ctx *proto.Context, loggerName string, level proto.Level, adapter ...pr
 }
 
 func NewDefaultLogger(loggerName string, adapter ...proto.Adapter) *Logger {
-	return New(&DefaultContext, loggerName, proto.LevelDebug, adapter...)
+	return New(&DefaultContext, loggerName, 4, proto.LevelDebug, adapter...)
 }
 
 // when depth<=0, close the caller path

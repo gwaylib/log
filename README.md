@@ -49,14 +49,28 @@ import (
   "github.com/gwaylib/logger"
 )
 
+var lg *logger.Log
+
 func init() {
   // make a custom logger 
   level, _ := strconv.Atoi(os.Getenv(log.GWAYLIB_LOG_LEVEL))
-  adapter = []logger.Adapter{stdio.New(os.Stdout)}
-  log.Log = logger.New(&logger.DefaultContext, "appname", proto.Levev(level), adapter...)
+  adapter := []logger.Adapter{stdio.New(os.Stdout)}
+  callerDepth := 4 // if callerDepth == 0, close the file path caller
+
+  // replace the default logger
+  log.Log = logger.New(&logger.DefaultContext, "appname", callerDepth, proto.Level(level), adapter...)
+
+  // or
+  // make a new package log
+  lg = logger.New(&logger.DefaultContext, "appname", callerDepth, proto.Level(level), adapter...)
+
+  // or
+  // make a new package default log
+  //lg = logger.NewDefaultLogger(loggerName, adapter...)
 }
 
 func main() {
   log.Info("OK")
+  lg.Info("OK")
 }
 ```

@@ -20,14 +20,18 @@ const (
 )
 
 var (
-	Log = New("")
+	Log = newWithCaller("", 4)
 )
 
-func New(prefix string) proto.Logger {
+func newWithCaller(loggerName string, callerDepth int) proto.Logger {
 	level, _ := strconv.Atoi(os.Getenv(GWAYLIB_LOG_LEVEL))
 	ctx := &logger.DefaultContext
 	adapter := []proto.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
-	return logger.New(ctx, prefix, proto.Level(level), adapter...)
+	return logger.New(ctx, loggerName, callerDepth, proto.Level(level), adapter...)
+}
+
+func New(loggerName string) proto.Logger {
+	return newWithCaller(loggerName, 0)
 }
 
 // Debug level, for developer println the debug message.
