@@ -67,6 +67,9 @@ func init() {
   // or
   // make a new package default log
   //lg = logger.NewDefaultLogger(loggerName, adapter...)
+
+  // or 
+  // copy the log.go file in local and fix it
 }
 
 func main() {

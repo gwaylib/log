@@ -31,7 +31,7 @@ func newWithCaller(loggerName string, callerDepth int) proto.Logger {
 }
 
 func New(loggerName string) proto.Logger {
-	return newWithCaller(loggerName, 0)
+	return newWithCaller(loggerName, 3)
 }
 
 // Debug level, for developer println the debug message.
