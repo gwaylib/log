@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	Log = New("default")
+	Log = New("")
 )
 
 func New(prefix string) proto.Logger {

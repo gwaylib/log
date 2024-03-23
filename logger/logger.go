@@ -1,7 +1,10 @@
 package logger
 
 import (
+	"fmt"
 	"os"
+	"runtime"
+	"strings"
 	"sync"
 	"time"
 
@@ -14,25 +17,36 @@ var (
 
 // logger for private
 type Logger struct {
-	mu         sync.Mutex
-	context    *proto.Context
-	adapters   []proto.Adapter
-	loggerName string
-	level      proto.Level
+	mu          sync.Mutex
+	context     *proto.Context
+	adapters    []proto.Adapter
+	loggerName  string
+	level       proto.Level
+	callerDepth int
 }
 
 func New(ctx *proto.Context, loggerName string, level proto.Level, adapter ...proto.Adapter) *Logger {
+	callerDepth := 0
+	if len(loggerName) == 0 {
+		callerDepth = 4
+	}
 	lg := &Logger{
-		context:    ctx,
-		adapters:   adapter,
-		loggerName: loggerName,
-		level:      level,
+		context:     ctx,
+		adapters:    adapter,
+		loggerName:  loggerName,
+		level:       level,
+		callerDepth: callerDepth,
 	}
 	return lg
 }
 
 func NewDefaultLogger(loggerName string, adapter ...proto.Adapter) *Logger {
 	return New(&DefaultContext, loggerName, proto.LevelDebug, adapter...)
+}
+
+// when depth<=0, close the caller path
+func (l *Logger) SetCallerDepth(depth int) {
+	l.callerDepth = depth
 }
 
 func (l *Logger) SetOutputLevel(level proto.Level) {
@@ -70,29 +84,44 @@ func (l *Logger) Info(msg ...interface{}) {
 func (l *Logger) Infof(f string, msg ...interface{}) {
 	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
 }
-
+func (l *Logger) Print(msg ...interface{}) {
+	l.put(proto.LevelInfo, proto.ToMsg(msg...))
+}
+func (l *Logger) Printf(f string, msg ...interface{}) {
+	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
+}
 func (l *Logger) Warn(msg ...interface{}) {
 	l.put(proto.LevelWarn, proto.ToMsg(msg...))
 }
 func (l *Logger) Warnf(f string, msg ...interface{}) {
 	l.put(proto.LevelWarn, proto.ToMsgf(f, msg...))
 }
-
 func (l *Logger) Error(msg ...interface{}) {
 	l.put(proto.LevelError, proto.ToMsg(msg...))
 }
 func (l *Logger) Errorf(f string, msg ...interface{}) {
 	l.put(proto.LevelError, proto.ToMsgf(f, msg...))
 }
-
 func (l *Logger) Fatal(msg ...interface{}) {
 	m := proto.ToMsg(msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
 	panic(m)
 }
-
 func (l *Logger) Fatalf(f string, msg ...interface{}) {
+	m := proto.ToMsgf(f, msg...)
+	l.put(proto.LevelFatal, m)
+	l.Close()
+	panic(m)
+}
+
+func (l *Logger) Panic(msg ...interface{}) {
+	m := proto.ToMsg(msg...)
+	l.put(proto.LevelFatal, m)
+	l.Close()
+	panic(m)
+}
+func (l *Logger) Panicf(f string, msg ...interface{}) {
 	m := proto.ToMsgf(f, msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
@@ -112,7 +141,26 @@ func (l *Logger) ExitWithLevel(code int, level proto.Level, msg ...interface{}) 
 	os.Exit(code)
 }
 func (l *Logger) Exit(code int, msg ...interface{}) {
-	l.ExitWithLevel(code, proto.LevelInfo, msg...)
+	m := proto.ToMsg(msg...)
+	l.put(proto.LevelInfo, m)
+	l.Close()
+	os.Exit(code)
+}
+
+func caller(depth int) string {
+	at := ""
+	_, file, line, ok := runtime.Caller(depth)
+	if !ok {
+		at = "unknown"
+	}
+	fileFields := strings.Split(file, "/")
+	if len(fileFields) < 1 {
+		at = "no-fields"
+		return at
+	}
+
+	fileName := strings.Join(fileFields[len(fileFields)-1:], "/")
+	return fmt.Sprintf("%s:%d", fileName, line)
 }
 func (l *Logger) put(level proto.Level, msg []byte) {
 	// TODO: performance of lock?
@@ -123,7 +171,16 @@ func (l *Logger) put(level proto.Level, msg []byte) {
 	}
 	l.mu.Unlock()
 
-	l.Put([]*proto.Data{&proto.Data{time.Now(), level, l.loggerName, msg}})
+	loggerName := l.loggerName
+	if l.callerDepth > 0 {
+		loggerName = loggerName + ":" + caller(l.callerDepth)
+	}
+	l.Put([]*proto.Data{&proto.Data{
+		time.Now(),
+		level,
+		loggerName,
+		msg,
+	}})
 }
 
 func (l *Logger) Put(data []*proto.Data) {
@@ -150,17 +207,4 @@ func (l *Logger) Close() {
 	for _, a := range l.adapters {
 		a.Close()
 	}
-}
-
-func (l *Logger) Print(msg ...interface{}) {
-	l.Info(msg...)
-}
-func (l *Logger) Printf(f string, msg ...interface{}) {
-	l.Infof(f, msg...)
-}
-func (l *Logger) Panic(msg ...interface{}) {
-	l.Fatal(msg...)
-}
-func (l *Logger) Panicf(f string, msg ...interface{}) {
-	l.Fatalf(f, msg...)
 }
