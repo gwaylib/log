@@ -1,5 +1,5 @@
 ## Using gwaylib/log
-The number of logs should not be too many in the release program, which may affect the program performance.<br/>
+Logs should be used for alarm processing, DEBUG logs should not be abused in production, and behavior logs should be processed using the behavior module.<br/>
 In the call, the logger adopts the function of asynchronous cache to improve the execution efficiency of the log. The cache value is determined by the adapter implements, and the default is 10 items cache.<br/>
 The log should be closed after use to ensure that the cached data can be output. If the cached data cannot be output, the error will be transferred by the adapter.<br/>
 
@@ -76,4 +76,9 @@ func main() {
   log.Info("OK")
   lg.Info("OK")
 }
+```
+## Log server implement
+Refer:
+```
+https://github.com/gwaysys/log-server
 ```

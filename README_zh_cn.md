@@ -1,5 +1,5 @@
 ## 日志包的使用
-日志的数量在正式过程中应不能太多，太大将可能影响程序性能;<br/>
+日志应当用于告警处理，DEBUG日志在生产中不应被滥用，行为日志应使用behavior模块处理。<br/>
 在接口调用中，日志器采用了异步缓存的功能以提高日志的执行效率，缓存值由具体适配置器决定，默认为10条缓存。<br/>
 日志在使用结束后应关闭，以确保缓存的数据能够输出，如果缓存的数据不能输出，该错误由适配器进行转存处理。<br/>
 
@@ -54,10 +54,16 @@ func init() {
   // make a custom logger 
   level, _ := strconv.Atoi(os.Getenv(log.GWAYLIB_LOG_LEVEL_NAME))
   adapter = []logger.Adapter{stdio.New(os.Stdout)}
-  log.Log = logger.New(&logger.DefaultContext, "appname", proto.Levev(level), adapter...)
+  log.Log = logger.New(&logger.DefaultContext, "appname", proto.Levev(level), 4, adapter...)
 }
 
 func main() {
   log.Info("OK")
 }
+```
+
+## 日志服务器实现
+可参考:
+```
+https://github.com/gwaysys/log-server
 ```
