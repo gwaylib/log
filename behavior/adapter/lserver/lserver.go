@@ -1,5 +1,5 @@
 // Deprecated, use redismsq instead
-package adapter
+package lserver
 
 import (
 	"github.com/gwaylib/beanmsq"
