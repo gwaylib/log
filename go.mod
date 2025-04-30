@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/gwaylib/beanmsq v0.0.0-20250413015903-34e67425271a
-	github.com/gwaylib/errors v0.0.3
+	github.com/gwaylib/errors v0.0.4
 	github.com/gwaylib/redis v0.0.0-20231110105356-a4910e0c1eaf // indirect
 	github.com/iwanbk/gobeanstalk v0.0.0-20160903043409-dbbb23937c31 // indirect
 	github.com/kr/beanstalk v0.0.0-20180818045031-cae1762e4858 // indirect
