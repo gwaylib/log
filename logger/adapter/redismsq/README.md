@@ -7,5 +7,5 @@ apt-get install redis
 
 Server implement by
 ```
-https://github.com/gwaycc/log-server
+https://github.com/gwaysys/log-server
 ```

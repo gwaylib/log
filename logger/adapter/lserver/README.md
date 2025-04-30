@@ -9,5 +9,5 @@ apt-get install beanstalkd
 
 Server implement by
 ```
-https://github.com/gwaycc/lserver
+https://github.com/gwaysys/lserver
 ```
