@@ -7,7 +7,7 @@ import (
 )
 
 func TestPut(t *testing.T) {
-	log := logger.NewDefaultLogger("testing", NewFile("./file.log", 10, 1024))
+	log := logger.NewDefaultLogger("testing", NewFile("/tmp/file.log", 10, 200))
 	log.Debug("debug")
 	log.Debug([]byte{0xff})
 	log.Info("info")

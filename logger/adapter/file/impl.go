@@ -17,6 +17,7 @@ import (
 
 type fileInfo struct {
 	fileIdx  int
+	fileDir  string
 	fileName string
 }
 
@@ -26,9 +27,9 @@ type logFile struct {
 }
 
 type Adapter struct {
-	fileName   string // 文件路径及名称
-	backups    int    // 保留的文件数
-	fileSize   int64  // 每个文件大小
+	filePath   string // file path contain the base name
+	backups    int    // backup files
+	fileSize   int64  // size of each file
 	file       *logFile
 	buffer     chan *proto.Proto
 	closing    bool
@@ -46,11 +47,12 @@ func (a *Adapter) closeFile() {
 }
 
 func (a *Adapter) reBackup() error {
-	dirs, err := ioutil.ReadDir(".")
+	fileDir := filepath.Dir(a.filePath)
+	dirs, err := ioutil.ReadDir(fileDir)
 	if err != nil {
 		return errors.As(err)
 	}
-	baseName := filepath.Base(a.fileName)
+	baseName := filepath.Base(a.filePath)
 	names := []fileInfo{}
 	for _, dir := range dirs {
 		dirName := dir.Name()
@@ -66,7 +68,7 @@ func (a *Adapter) reBackup() error {
 				continue
 			}
 		}
-		names = append(names, fileInfo{fileName: dirName, fileIdx: idx})
+		names = append(names, fileInfo{fileDir: fileDir, fileName: dirName, fileIdx: idx})
 	}
 	if len(names) == 0 {
 		return nil
@@ -76,15 +78,16 @@ func (a *Adapter) reBackup() error {
 	})
 	for i := len(names) - 1; i > -1; i-- {
 		info := names[i]
+		filePath := filepath.Join(info.fileDir, info.fileName)
 		// remove file when over backups
 		if info.fileIdx+1 >= a.backups {
-			if err := os.Remove(info.fileName); err != nil {
+			if err := os.Remove(filePath); err != nil {
 				println(errors.As(err))
 			}
 			continue
 		}
 		// rename to new index
-		if err := os.Rename(info.fileName, fmt.Sprintf("%s.%d", a.fileName, info.fileIdx+1)); err != nil {
+		if err := os.Rename(filePath, fmt.Sprintf("%s.%d", a.filePath, info.fileIdx+1)); err != nil {
 			println(errors.As(err))
 		}
 	}
@@ -95,7 +98,7 @@ func (a *Adapter) getFile() *logFile {
 	if a.file != nil {
 		return a.file
 	}
-	file, err := os.OpenFile(a.fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile(a.filePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		println(errors.As(err))
 		return nil
@@ -167,7 +170,6 @@ func (a *Adapter) run() {
 				if file.size >= a.fileSize {
 					a.closeFile()
 				}
-				print(string(data))
 			}
 		case <-a.closeEvent:
 			a.closing = true
@@ -181,13 +183,13 @@ func (a *Adapter) run() {
 	}
 }
 
-func New(fileName string) proto.Adapter {
-	return NewFile(fileName, math.MaxInt, math.MaxInt)
+func New(path string) proto.Adapter {
+	return NewFile(path, math.MaxInt, math.MaxInt)
 }
 
-func NewFile(fileName string, backups int, fileSize int64) proto.Adapter {
+func NewFile(path string, backups int, fileSize int64) proto.Adapter {
 	a := &Adapter{
-		fileName:   fileName,
+		filePath:   path,
 		backups:    backups,
 		fileSize:   fileSize,
 		buffer:     make(chan *proto.Proto, 100),
