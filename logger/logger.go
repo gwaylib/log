@@ -169,7 +169,11 @@ func (l *Logger) put(level proto.Level, msg []byte) {
 
 	loggerName := l.loggerName
 	if l.callerDepth > 0 {
-		loggerName = loggerName + ":" + caller(l.callerDepth)
+		if len(loggerName) > 0 {
+			loggerName = loggerName + ":" + caller(l.callerDepth)
+		} else {
+			loggerName = caller(l.callerDepth)
+		}
 	}
 	l.Put([]*proto.Data{&proto.Data{
 		time.Now(),
