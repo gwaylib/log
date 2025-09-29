@@ -20,10 +20,10 @@ const (
 )
 
 var (
-	Log = newWithCaller("", 4)
+	Log = NewWithCaller("", 4)
 )
 
-func newWithCaller(loggerName string, callerDepth int) proto.Logger {
+func NewWithCaller(loggerName string, callerDepth int) proto.Logger {
 	level, _ := strconv.Atoi(os.Getenv(ENV_GWAYLIB_LOG_LEVEL))
 	ctx := &logger.DefaultContext
 	adapter := []proto.Adapter{stdio.New(os.Stdout, os.Stderr)} // implement the adapter what you need
@@ -31,7 +31,7 @@ func newWithCaller(loggerName string, callerDepth int) proto.Logger {
 }
 
 func New(loggerName string) proto.Logger {
-	return newWithCaller(loggerName, 3)
+	return NewWithCaller(loggerName, 3)
 }
 
 // Debug level, for developer println the debug message.
