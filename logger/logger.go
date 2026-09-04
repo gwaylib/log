@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	DefaultContext = proto.Context{"default", "0.0.0", HostName}
+	DefaultContext = proto.Context{Platform: "default", Version: "0.0.0", Ip: HostName}
 )
 
 // logger for private
@@ -46,13 +46,9 @@ func (l *Logger) SetCallerDepth(depth int) {
 }
 
 func (l *Logger) SetOutputLevel(level proto.Level) {
-	l.mu.Lock()
-	defer l.mu.Unlock()
 	l.level = level
 }
 func (l *Logger) GetOutputLevel() proto.Level {
-	l.mu.Lock()
-	defer l.mu.Unlock()
 	return l.level
 }
 
@@ -68,43 +64,79 @@ func (l *Logger) GetAdapter() []proto.Adapter {
 }
 
 func (l *Logger) Debug(msg ...interface{}) {
+	if l.levelClosed(proto.LevelDebug) {
+		return
+	}
 	l.put(proto.LevelDebug, proto.ToMsg(msg...))
 }
 func (l *Logger) Debugf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelDebug) {
+		return
+	}
 	l.put(proto.LevelDebug, proto.ToMsgf(f, msg...))
 }
 
 func (l *Logger) Info(msg ...interface{}) {
+	if l.levelClosed(proto.LevelInfo) {
+		return
+	}
 	l.put(proto.LevelInfo, proto.ToMsg(msg...))
 }
 func (l *Logger) Infof(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelInfo) {
+		return
+	}
 	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
 }
 func (l *Logger) Print(msg ...interface{}) {
+	if l.levelClosed(proto.LevelInfo) {
+		return
+	}
 	l.put(proto.LevelInfo, proto.ToMsg(msg...))
 }
 func (l *Logger) Printf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelInfo) {
+		return
+	}
 	l.put(proto.LevelInfo, proto.ToMsgf(f, msg...))
 }
 func (l *Logger) Warn(msg ...interface{}) {
+	if l.levelClosed(proto.LevelWarn) {
+		return
+	}
 	l.put(proto.LevelWarn, proto.ToMsg(msg...))
 }
 func (l *Logger) Warnf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelWarn) {
+		return
+	}
 	l.put(proto.LevelWarn, proto.ToMsgf(f, msg...))
 }
 func (l *Logger) Error(msg ...interface{}) {
+	if l.levelClosed(proto.LevelError) {
+		return
+	}
 	l.put(proto.LevelError, proto.ToMsg(msg...))
 }
 func (l *Logger) Errorf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelError) {
+		return
+	}
 	l.put(proto.LevelError, proto.ToMsgf(f, msg...))
 }
 func (l *Logger) Fatal(msg ...interface{}) {
+	if l.levelClosed(proto.LevelFatal) {
+		return
+	}
 	m := proto.ToMsg(msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
 	panic(m)
 }
 func (l *Logger) Fatalf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelFatal) {
+		return
+	}
 	m := proto.ToMsgf(f, msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
@@ -112,12 +144,18 @@ func (l *Logger) Fatalf(f string, msg ...interface{}) {
 }
 
 func (l *Logger) Panic(msg ...interface{}) {
+	if l.levelClosed(proto.LevelFatal) {
+		return
+	}
 	m := proto.ToMsg(msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
 	panic(m)
 }
 func (l *Logger) Panicf(f string, msg ...interface{}) {
+	if l.levelClosed(proto.LevelFatal) {
+		return
+	}
 	m := proto.ToMsgf(f, msg...)
 	l.put(proto.LevelFatal, m)
 	l.Close()
@@ -131,12 +169,20 @@ func (l *Logger) Panicf(f string, msg ...interface{}) {
 // code -- code of os exit
 // msg -- exit message
 func (l *Logger) ExitWithLevel(code int, level proto.Level, msg ...interface{}) {
+	if l.levelClosed(level) {
+		return
+	}
+
 	m := proto.ToMsg(msg...)
 	l.put(level, m)
 	l.Close()
 	os.Exit(code)
 }
 func (l *Logger) Exit(code int, msg ...interface{}) {
+	if l.levelClosed(proto.LevelInfo) {
+		return
+	}
+
 	m := proto.ToMsg(msg...)
 	l.put(proto.LevelInfo, m)
 	l.Close()
@@ -158,14 +204,14 @@ func caller(depth int) string {
 	fileName := strings.Join(fileFields[len(fileFields)-1:], "/")
 	return fmt.Sprintf("%s:%d", fileName, line)
 }
-func (l *Logger) put(level proto.Level, msg []byte) {
+func (l *Logger) levelClosed(level proto.Level) bool {
 	// TODO: performance of lock?
-	l.mu.Lock()
-	if level < l.level {
-		l.mu.Unlock()
+	return level > l.level
+}
+func (l *Logger) put(level proto.Level, msg []byte) {
+	if l.levelClosed(level) {
 		return
 	}
-	l.mu.Unlock()
 
 	loggerName := l.loggerName
 	if l.callerDepth > 0 {
@@ -176,10 +222,10 @@ func (l *Logger) put(level proto.Level, msg []byte) {
 		}
 	}
 	l.Put([]*proto.Data{&proto.Data{
-		time.Now(),
-		level,
-		loggerName,
-		msg,
+		Date:   time.Now(),
+		Level:  level,
+		Logger: loggerName,
+		Msg:    msg,
 	}})
 }
 
@@ -189,8 +235,8 @@ func (l *Logger) Put(data []*proto.Data) {
 	}
 
 	log := &proto.Proto{
-		l.context,
-		data,
+		Context: l.context,
+		Data:    data,
 	}
 
 	// send log

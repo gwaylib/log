@@ -17,10 +17,10 @@ const (
 	LevelFatal = Level(4)
 )
 
-type Level int
+type Level int8
 
-func (l Level) Int() int {
-	return int(l)
+func (l Level) Int() int8 {
+	return int8(l)
 }
 
 func (l Level) ColorString() string {
